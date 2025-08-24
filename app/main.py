@@ -1,26 +1,19 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import Dict
-from datetime import datetime
+from datetime import datetime, UTC
+from models.coordinates import Coordinates
 
 app = FastAPI(title="Geo Service")
 
 # Временное хранилище (пока без БД)
-coordinates_storage: Dict[str, dict] = {}
-
-
-class Coordinates(BaseModel):
-    user_id: str
-    latitude: float
-    longitude: float
-    timestamp: datetime = datetime.utcnow()
+coordinates_storage = {}
 
 
 @app.post("/coordinates")
 async def save_coordinates(coords: Coordinates):
     """Сохраняем координаты пользователя"""
-    coordinates_storage[coords.user_id] = coords.dict()
-    return {"status": "ok", "saved": coords.dict()}
+    coordinates_storage[coords.user_id] = coords.model_dump()
+    return {"status": "ok", "saved": coords.model_dump()}
 
 
 @app.get("/coordinates/{user_id}")
