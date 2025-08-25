@@ -1,7 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from datetime import datetime, UTC
-from models.coordinates import Coordinates
+from app.models.coordinates import Coordinates
 
 app = FastAPI(title="Geo Service")
 
@@ -22,8 +20,3 @@ async def get_coordinates(user_id: str):
     if user_id not in coordinates_storage:
         raise HTTPException(status_code=404, detail="User not found")
     return coordinates_storage[user_id]
-
-
-@app.get("/health")
-async def health_check():
-    return {"status": "running"}
