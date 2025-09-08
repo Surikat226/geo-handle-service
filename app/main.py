@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from app.models.coordinates import Coordinates
+from loguru import logger
 
 app = FastAPI(title="Geo Service")
 
@@ -11,6 +12,7 @@ coordinates_storage = {}
 async def save_coordinates(coords: Coordinates):
     """Сохраняем координаты пользователя"""
     coordinates_storage[coords.user_id] = coords.model_dump()
+    logger.info(f"Получили данные с координатами: {coords}")
     return {"status": "ok", "saved": coords.model_dump()}
 
 
