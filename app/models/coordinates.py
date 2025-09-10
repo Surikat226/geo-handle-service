@@ -8,6 +8,7 @@ class Coordinates(BaseModel):
     """
 
     user_id: int
+    user_name: str
     latitude: float
     longitude: float
     timestamp: datetime = datetime.now(UTC)
